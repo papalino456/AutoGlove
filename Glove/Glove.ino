@@ -1,16 +1,16 @@
 
+#include <WiFi.h>
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
     #include "Wire.h"
 #endif
 
-// class default I2C address is 0x68
-// specific I2C addresses may be passed as a parameter here
-// AD0 low = 0x68 (default for SparkFun breakout and InvenSense evaluation board)
-// AD0 high = 0x69
 MPU6050 mpu;
-//MPU6050 mpu(0x69); // <-- use for AD0 high
+
+const char *ssid = "HALL9000";
+const char *password = "ANIROC1966";
+const String server = "https://sb-isa.herokuapp.com/";
 
 // uncomment "OUTPUT_READABLE_QUATERNION" if you want to see the actual
 // quaternion components in a [w, x, y, z] format (not best for parsing
@@ -49,8 +49,8 @@ MPU6050 mpu;
 
 
 
-#define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
-#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+#define INTERRUPT_PIN 2 
+#define LED_PIN 13
 bool blinkState = false;
 
 // MPU control/status vars
@@ -91,6 +91,8 @@ void dmpDataReady() {
 // ================================================================
 
 void setup() {
+
+
     // join I2C bus (I2Cdev library doesn't do this automatically)
     #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
         Wire.begin();
@@ -103,6 +105,15 @@ void setup() {
     // (115200 chosen because it is required for Teapot Demo output, but it's
     // really up to you depending on your project)
     Serial.begin(115200);
+    WiFi.begin(ssid, password);
+    while ((WiFi.status() != WL_CONNECTED) && count <= 10)
+    {
+      delay(500);
+      Serial.println(".");
+      count++;
+    }
+  Serial.print("connected!, ip:");
+  Serial.println(WiFi.localIP());
     while (!Serial); // wait for Leonardo enumeration, others continue immediately
 
     // NOTE: 8MHz or slower host processors, like the Teensy @ 3.3v or Ardunio
