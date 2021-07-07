@@ -51,6 +51,22 @@ const String server = "https://sb-isa.herokuapp.com/";
 
 #define INTERRUPT_PIN 2 
 #define LED_PIN 13
+
+// unions beetween fingers
+#define indexMiddlePin 18
+#define middleRingPin 19
+#define ringPinkyPin 21
+
+#define thumbPin 5
+
+// closed fingers
+#define closedIndexPin 12
+#define closedMiddlePin 14
+#define closedRingPin 22
+#define closedPinkyPin 26
+
+// else, open fingers are assumed
+
 bool blinkState = false;
 
 // MPU control/status vars
@@ -72,7 +88,6 @@ float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gra
 
 // packet structure for InvenSense teapot demo
 uint8_t teapotPacket[14] = { '$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n' };
-
 
 
 // ================================================================
@@ -189,16 +204,7 @@ void loop() {
 
     // wait for MPU interrupt or extra packet(s) available
     while (!mpuInterrupt && fifoCount < packetSize) {
-        // other program behavior stuff here
-        // .
-        // .
-        // .
-        // if you are really paranoid you can frequently test in between other
-        // stuff to see if mpuInterrupt is true, and if so, "break;" from the
-        // while() loop to immediately process the MPU data
-        // .
-        // .
-        // .
+        if
     }
 
     // reset interrupt flag and get INT_STATUS byte
